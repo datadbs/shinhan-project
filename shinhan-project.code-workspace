@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Desktop/shinhan-alpha-main/templates/images"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "shinhan-project"
+	}
+}

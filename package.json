@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@grapecity/wijmo.vue2.all": "^5.20222.877"
+  }
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        * {margin:0; padding:0}
+        li {list-style: none;}
+        body {padding:30px;}
+        .list {margin:20px 0; display: flex;}
+        .list > li {margin:5px;width:200px; border:1px solid gray; padding:10px;}
+        .list > li > * {display:block}
+        .list > li > img {width:200px; margin-bottom:20px;}
+        .list > li > strong {font-size:20px; color:#666; margin-bottom:10px}
+        .list > li > span{margin-bottom:10px;}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Sales Product 총갯수: {{index}}개, 총가격{{sum}}원</h1>
+        <p>구입목록</p>
+        <product-list
+            :chips-data="chips"
+            @add-item="addWork"
+            ></product-list>
+      </div>
+      <script>
+        const productList = {
+            template: `
+            <ul class="li">
+                <li v-for="(chip,i) in datas" :key="chip.title">
+                    <strong>{{chip.title}}</strong>
+                    <b>{{chip.price}}원</b>
+                    <a href="" @click.prevent="del(i)">삭제</a>
+                </li>
+            </ul>
+            <hr />
+            <ul class="list">
+                <li v-for="(chip,i) in chipsData" :key="chip.title">
+                    <img :src= chip.img />
+                    <strong>{{chip.title}}</strong>
+                    <span>{{chip.desc}}</span>
+                    <b>{{chip.price}}</b>
+                    <button @click="add(i)">구입</button>
+                </li>
+            </ul>
+            `,
+            data() {
+                return {
+                    datas: []
+                }
+            },
+            props: {chipsData: Array , like: Number},
+            methods: {
+                add(i) {
+                    this.$emit('add-item', i)
+                    this.datas.push({
+                        'title': this.chipsData[i].title,
+                        'price': this.chipsData[i].price,
+                    })
+                },
+                del(i) {
+                    this.datas.splice(i, 1)
+                }
+            }
+        }
+        const app = Vue.createApp({
+            data() {
+                return {
+                    index: 0,
+                    sum: 0,
+                    chips:[{
+                        img:`images/mango.jpg`,
+                        title:`자연그대로 망고칩`,
+                        desc:`단맛이 그대로 살아있는 망고칩입니다.`,
+                        price:2500
+                    },
+                    {
+                        img:`images/apple.jpg`,
+                        title:`천연 오가닉 사과칩`,
+                        desc:`깨끗한 재료를 엄선하여 자연을 그대로 담았습니다.`,
+                        price:2000
+                    },
+                    {
+                        img:`images/jujube.jpg`,
+                        title:`아이깨끗 대추칩`,
+                        desc:`새콤함이 살아있는 반건조 대추그대로.`,
+                        price:3000
+                    }
+                ]
+                }
+            },
+            components: {'product-list': productList},
+            methods: {
+                addWork(num) {
+                    console.log(num+'받았어')
+                    this.index++
+                    this.sum += this.chips[num].price
+                }
+            }
+        })
+        // app.component('product-list',{
+        //     template: `
+        //     <li>
+        //         <img src="images/mango.jpg" />
+        //         <strong>천연 오가닉 사과칩</strong>
+        //         <span>깨끗한 재료를 엄선하여 자연을 그대로 담았습니다.</span>
+        //         <b>2,000원</b>
+        //     </li>
+        //     `,
+        // });
+        app.mount("#app")
+      </script>
+</body>
+</html>
